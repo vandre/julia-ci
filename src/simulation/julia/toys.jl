@@ -1,6 +1,6 @@
 using Distributed
 using DistributedArrays
-addprocs(2, exeflags="--project")
+addprocs(4, exeflags="--project")
 @everywhere using DistributedArrays
 @everywhere using DistributedArrays.SPMD
 
