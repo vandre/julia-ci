@@ -24,7 +24,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-
+      - uses: julia-actions/julia-buildpkg@v1.4.2
       # Runs Julia script using the runners shell
       - name: Run Simulation
         run: |
