@@ -1,0 +1,62 @@
+name: Julia CI with Docker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JULIA_CACHE: '1'
+  JULIA_NUM_THREADS: 'auto'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    container:
+      image: julia:1.8.5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Cache Julia dependencies
+        uses: actions/cache@v3
+        if: ${{ env.JULIA_CACHE != '0'}}
+        with:
+          path: ~/.julia
+          key: ${{ runner.os }}-juliacontainer-${{ env.JULIA_CACHE }}-${{ hashFiles('**/Manifest.toml') }}
+      - name: Install Julia dependencies
+        env:
+          JULIA_PROJECT: ${{ github.workspace }}
+        run: julia --color=yes -e 'import Pkg; Pkg.instantiate(); Pkg.resolve(); Pkg.precompile()'
+      - name: Julia execution
+        env:
+          JULIA_PROJECT: ${{ github.workspace }}
+        run: julia --project src/simulation/julia/toys.jl
+  regular:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup Julia
+        uses: julia-actions/setup-julia@v1
+        with:
+          version: '1.8.5'
+      - name: Cache Julia dependencies
+        uses: actions/cache@v3
+        if: ${{ env.JULIA_CACHE != '0'}}
+        with:
+          path: ~/.julia
+          key: ${{ runner.os }}-julia-${{ env.JULIA_CACHE }}-${{ hashFiles('**/Manifest.toml') }}
+      - name: Install Julia dependencies
+        env:
+          JULIA_PROJECT: ${{ github.workspace }}
+        run: julia --color=yes -e 'import Pkg; Pkg.instantiate(); Pkg.resolve(); Pkg.precompile()'
+      - name: Julia execution
+        env:
+          JULIA_PROJECT: ${{ github.workspace }}
+        run: julia --project src/simulation/julia/toys.jl
