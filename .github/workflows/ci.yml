@@ -28,8 +28,5 @@ jobs:
       # Runs Julia script using the runners shell
       - name: Run Simulation
         run: |
-          julia --project --color=yes -e '
-            using Pkg;
-            Pkg.instantiate();
-            include("src/simulation/julia/toys.jl")'
+          julia --project src/simulation/julia/toys.jl
  
