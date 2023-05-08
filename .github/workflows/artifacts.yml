@@ -40,15 +40,17 @@ jobs:
     needs: [job_1,job_2]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Download math result for job 2
         uses: actions/download-artifact@v3
         with:
           name: homework
       - name: Print the final result
-        shell: bash
+        uses: actions/checkout@v3
+      - shell: bash
         run: |
           value=`cat math-homework.txt`
           echo The result is $value
+          ls dolphin*
           echo "### Bench complete :rocket:" >> $GITHUB_STEP_SUMMARY 
-          echo "![](dolphin.jpg)" >> $GITHUB_STEP_SUMMARY 
+          echo "![foo](dolphin.jpg)" >> $GITHUB_STEP_SUMMARY 
+          echo "![bar](/dolphin.jpg)" >> $GITHUB_STEP_SUMMARY 
