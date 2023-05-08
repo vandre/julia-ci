@@ -49,8 +49,8 @@ jobs:
       - name: Print the final result
         run: |
           value=`cat math-homework.txt`
-          md =`cat test.md`
+          md=`cat test.md`
           echo The result is $value
           echo "### Bench complete :rocket:" >> $GITHUB_STEP_SUMMARY 
-          echo "$md" >> $GITHUB_STEP_SUMMARY 
+          echo $md >> $GITHUB_STEP_SUMMARY 
          
