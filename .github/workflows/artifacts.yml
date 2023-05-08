@@ -40,6 +40,7 @@ jobs:
     needs: [job_1,job_2]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: Download math result for job 2
         uses: actions/download-artifact@v3
         with:
@@ -49,3 +50,5 @@ jobs:
         run: |
           value=`cat math-homework.txt`
           echo The result is $value
+          echo "### Bench complete :rocket:" >> $GITHUB_STEP_SUMMARY 
+          echo "![](dolphin.jpg)" >> $GITHUB_STEP_SUMMARY 
