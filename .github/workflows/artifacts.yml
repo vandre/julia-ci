@@ -36,7 +36,7 @@ jobs:
           path: math-homework.txt
       - name: Get source Code
         uses: actions/checkout@v3
-      - name: Get source Code
+      - name: Upload script artifact
         uses: actions/upload-artifact@v3
         with:
           name: script
@@ -49,14 +49,12 @@ jobs:
     steps:
       - name: Download math result for job 2
         uses: actions/download-artifact@v3
-        with:
-          path: ~
       - name: Display structure of downloaded files
         run: ls -R
       - name: Print the final result
         run: |
-          value=`cat math-homework.txt`
-          md=`cat test.md`
+          value=`cat homework/math-homework.txt`
+          md=`cat script/test.md`
           echo The result is $value
           echo "### Bench complete :rocket:" >> $GITHUB_STEP_SUMMARY 
           echo $md >> $GITHUB_STEP_SUMMARY         
